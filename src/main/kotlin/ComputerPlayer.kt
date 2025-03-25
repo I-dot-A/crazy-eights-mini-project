@@ -1,4 +1,4 @@
-class ComputerPlayer(playerNumber: Int, deck: Deck, pile: Deck) : Player(playerNumber, deck, pile) {
+class ComputerPlayer(playerNumber: Int, deck: Deck, pile: Deck, private val handVisible: Boolean = false) : Player(playerNumber, deck, pile) {
     // There is a protected Deck object called 'hand'
     private val suits = arrayOf("Spades", "Hearts", "Diamonds", "Clubs")
 
@@ -39,11 +39,10 @@ class ComputerPlayer(playerNumber: Int, deck: Deck, pile: Deck) : Player(playerN
     }
 
     fun playRound(latestEight: Boolean = false, opponentChosenSuit: String = "") : String { // Returns String when an 8 is played
-        val latest : Card = if (latestEight) {
+        val latest : Card = if (latestEight)
             Card(opponentChosenSuit, '8') // Temporary card in case latest is an 8
-        } else {
+        else
             pile.topOfDeck()
-        }
 
         chosenSuit = ""
         var cardsDrawn = 0
@@ -51,6 +50,10 @@ class ComputerPlayer(playerNumber: Int, deck: Deck, pile: Deck) : Player(playerN
         println("-----".repeat(20))
         println("It is now player $playerNumber's turn.")
         println("Card on pile: $latest")
+
+        if (handVisible)
+            println("Player $playerNumber's hand: $hand")
+
         println("\nPlayer $playerNumber is deciding...")
         Thread.sleep(1000)
 
@@ -59,25 +62,31 @@ class ComputerPlayer(playerNumber: Int, deck: Deck, pile: Deck) : Player(playerN
             Thread.sleep(650)
             if (!deck.isDeckEmpty()) {
                 drawOneCard()
+                if (handVisible)
+                    println("Player $playerNumber's hand: $hand")
             } else {
                 println("Deck is empty. Reshuffling...")
                 reshufflePileToDeck()
                 Thread.sleep(300)
                 println("New card taken")
                 drawOneCard()
+                if (handVisible)
+                    println("Player $playerNumber's hand: $hand")
             }
             cardsDrawn++
         }
 
-        if (cardsDrawn > 9) {
+        if (cardsDrawn > 9)
             println("Ooooooh... $cardsDrawn drawn cards. That's rough...")
-        }
 
         println("\nPlayer $playerNumber has a playable card!")
 
         Thread.sleep(650)
 
         pickCard(latest)
+
+        if (handVisible)
+            println("Player $playerNumber's hand: $hand")
 
         return chosenSuit
     }

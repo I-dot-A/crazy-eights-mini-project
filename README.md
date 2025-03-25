@@ -40,7 +40,18 @@ I believe that should be it. Everything else is pretty self-explanatory.
 
 I hope you enjoy my basic but fun mini-project.
 
+## Things I'm considering adding/changing
+
+- Option for more than 2 players
+- Option to edit win score
+- Giving certain cards special abilities or adding special cards (+2, swap hands, reverse order, something new, etc.)
+- Improved computer decision-making
+- Window with UI instead of using the console
+
 ## Changelog
 
 - 3/21/25
   - v1.0.0: Initial version
+- 3/25/25
+  - v1.1.0
+    - Added option to simulate game between 2 computers

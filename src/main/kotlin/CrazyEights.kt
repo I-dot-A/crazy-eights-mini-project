@@ -7,8 +7,8 @@ import kotlin.system.exitProcess
 class CrazyEights {
     private val deck = Deck(true)
     private val pile = Deck(true)
-    private lateinit var playerOne : HumanPlayer
-    private lateinit var playerTwo : ComputerPlayer
+    private lateinit var p1 : Player
+    private lateinit var p2 : Player
     private var latestSuitIfEight : String = ""
     private var playerOneScore = 0
     private var playerTwoScore = 0
@@ -97,14 +97,58 @@ class CrazyEights {
     }
 
     private fun playGame() { // Starts the game
-        playerOne = HumanPlayer(1, deck, pile)
-        playerTwo = ComputerPlayer(2, deck, pile)
+        var scanner = Scanner(System.`in`)
+        var humanPlaying = true
+
+        println("Type 'PvC' to play vs computers or 'CvC' to simulate a match with computer players.")
+        while (true) { // Here, the player gets to decide if they actually want to play or not
+            try {
+                val input = scanner.nextLine()
+
+                if (input == "quit") {
+                    println("Goodbye!")
+                    exitProcess(0)
+                } else if (input.lowercase() == "pvc") {
+                    println("You have elected to play vs computers.")
+                    break
+                } else if (input.lowercase() == "cvc") {
+                    println("You have elected not to play. Simulating game...")
+                    humanPlaying = false
+                    break
+                } else {
+                    throw IllegalArgumentException()
+                }
+            } catch (e: IllegalArgumentException) {
+                println("Please enter a valid input: 'pvc' / 'cvc' / 'quit'")
+                scanner = Scanner(System.`in`)
+                continue
+            }
+        }
+
+        // Variables for casting
+        lateinit var humanPlayerOne : HumanPlayer
+        lateinit var computerPlayerOne : ComputerPlayer
+        lateinit var playerTwo : ComputerPlayer
+
+        if (humanPlaying) {
+            p1 = HumanPlayer(1, deck, pile)
+            p2 = ComputerPlayer(2, deck, pile)
+
+            humanPlayerOne = p1 as HumanPlayer
+            playerTwo = p2 as ComputerPlayer
+        } else {
+            p1 = ComputerPlayer(1, deck, pile, true)
+            p2 = ComputerPlayer(2, deck, pile, true)
+
+            computerPlayerOne = p1 as ComputerPlayer
+            playerTwo = p2 as ComputerPlayer
+        }
 
         var rounds = 0
 
         while (playerOneScore < 50 && playerTwoScore < 50) {
-            playerOne.clearHand()
-            playerTwo.clearHand()
+            p1.clearHand()
+            p2.clearHand()
 
             pile.clearDeck()
 
@@ -112,9 +156,9 @@ class CrazyEights {
             deck.shuffle()
 
             for (i in 1..5) {
-                playerOne.drawOneCard()
+                p1.drawOneCard()
 
-                playerTwo.drawOneCard()
+                p2.drawOneCard()
             }
 
             var latestCard = deck.drawCard()
@@ -126,48 +170,67 @@ class CrazyEights {
 
             pile.addCard(latestCard) // Add the card to the pile
 
-            playerOne.setRoundScore(0)
-            playerTwo.setRoundScore(0)
+            p1.setRoundScore(0)
+            p2.setRoundScore(0)
 
-            val first = whoGoesFirst()
+            val first : Int = if (humanPlaying)
+                whoGoesFirst()
+            else
+                (1..2).random() // Randomly picks 1 or 2
 
             println("Begin round ${rounds + 1}!")
 
             if (first == 1) {
-                while (!playerOne.isHandEmpty() && !playerTwo.isHandEmpty()) {
+                if (!humanPlaying)
+                    println("Player 1 goes first.")
+
+                while (!p1.isHandEmpty() && !p2.isHandEmpty()) {
                     latestSuitIfEight = if (latestSuitIfEight != "") { // These code blocks check if there is a latest suit
                                                                        // due to an eight and calls playRound accordingly
-                        playerOne.playRound(true, latestSuitIfEight)
+                        if (humanPlaying)
+                            humanPlayerOne.playRound(true, latestSuitIfEight)
+                        else
+                            computerPlayerOne.playRound(true, latestSuitIfEight)
+
                     } else {
-                        playerOne.playRound()
+                        if (humanPlaying)
+                            humanPlayerOne.playRound()
+                        else
+                            computerPlayerOne.playRound()
                     }
 
-                    if (playerOne.isHandEmpty() || playerTwo.isHandEmpty()) { // Mid loop check
+                    if (p1.isHandEmpty() || p2.isHandEmpty()) // Mid loop check
                         break
-                    }
 
-                    latestSuitIfEight = if (latestSuitIfEight != "") {
+                    latestSuitIfEight = if (latestSuitIfEight != "")
                         playerTwo.playRound(true, latestSuitIfEight)
-                    } else {
+                    else
                         playerTwo.playRound()
-                    }
                 }
             } else if (first == 2) {
-                while (!playerOne.isHandEmpty() && !playerTwo.isHandEmpty()) {
-                    latestSuitIfEight = if (latestSuitIfEight != "") {
+                if (!humanPlaying)
+                    println("Player 2 goes first.")
+
+                while (!p1.isHandEmpty() && !p2.isHandEmpty()) {
+                    latestSuitIfEight = if (latestSuitIfEight != "")
                         playerTwo.playRound(true, latestSuitIfEight)
-                    } else {
+                    else
                         playerTwo.playRound()
-                    }
 
-                    if (playerOne.isHandEmpty() || playerTwo.isHandEmpty()) { // Mid loop check
+                    if (p1.isHandEmpty() || p2.isHandEmpty()) // Mid loop check
                         break
-                    }
 
                     latestSuitIfEight = if (latestSuitIfEight != "") {
-                        playerOne.playRound(true, latestSuitIfEight)
+                        if (humanPlaying)
+                            humanPlayerOne.playRound(true, latestSuitIfEight)
+                        else
+                            computerPlayerOne.playRound(true, latestSuitIfEight)
+
                     } else {
-                        playerOne.playRound()
+                        if (humanPlaying)
+                            humanPlayerOne.playRound()
+                        else
+                            computerPlayerOne.playRound()
                     }
                 }
             }
@@ -176,8 +239,8 @@ class CrazyEights {
 
             println("Calculating scores...")
 
-            val p1RScore = playerOne.calcRoundScore()
-            val p2RScore = playerTwo.calcRoundScore()
+            val p1RScore = p1.calcRoundScore()
+            val p2RScore = p2.calcRoundScore()
 
             playerOneScore += p1RScore
             playerTwoScore += p2RScore

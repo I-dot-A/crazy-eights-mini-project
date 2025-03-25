@@ -39,16 +39,16 @@ class Deck(startEmpty: Boolean) : Iterable<Card> {
     fun shuffle() { cardDeck.shuffle() }
 
     fun drawCard() : Card { // Returns the card on top of the pile, if deck is empty, returns an "empty" card
-        if (cardDeck.isNotEmpty()) {
+        if (cardDeck.isNotEmpty())
             return cardDeck.removeAt(cardDeck.size - 1)
-        }
+
         return Card("empty", 'e')
     }
 
     fun drawCardFromBottom() : Card { // Function specifically meant for reshufflePileToDeck
-        if (cardDeck.isNotEmpty()) {
+        if (cardDeck.isNotEmpty())
             return cardDeck.removeAt(0)
-        }
+
         return Card("empty", 'e')
     }
 
@@ -59,9 +59,9 @@ class Deck(startEmpty: Boolean) : Iterable<Card> {
     }
 
     fun topOfDeck() : Card { // This is like takeCard, but it does not remove the card from the deck
-        if (cardDeck.isNotEmpty()) {
+        if (cardDeck.isNotEmpty())
             return cardDeck[cardDeck.size - 1]
-        }
+
         return Card("empty", 'e')
     }
 

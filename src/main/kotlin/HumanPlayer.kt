@@ -105,7 +105,8 @@ class HumanPlayer(playerNumber: Int, deck: Deck, pile: Deck) : Player(playerNumb
 
                 val validation = validateResponse(cardPlayed)
 
-                if (validation == "Bad response") { throw IllegalArgumentException() }
+                if (validation == "Bad response")
+                    throw IllegalArgumentException()
 
                 cardPlayed = validation
                 break // If the code reaches here, the response was valid
