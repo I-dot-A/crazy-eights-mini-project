@@ -53,4 +53,6 @@ I hope you enjoy my basic but fun mini-project.
 - v1.0 - 3/21/25: Initial version
 - v1.1
     - v1.1.0 - 3/25/25: Added option to simulate game between 2 computers 
-    - v1.1.1 - 3/27/25: Added options menu and moved the option to simulate games there
+    - v1.1.1 - 3/27/25
+      - Added options menu and moved the option to simulate games there
+      - Reformatted changelog
