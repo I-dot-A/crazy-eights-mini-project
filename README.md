@@ -5,6 +5,8 @@ very simple program that simulates a simple game of Crazy Eights between a human
 the computer. Perhaps I may expand this project further to see what else I can add/modify.
 Below are the basic rules and instructions on how to play.
 
+Note: I used Java 21 while making this project. Just a warning.
+
 ## How to play
 
 Watch this [short video](https://www.youtube.com/watch?v=1c4YPQTS35I) for the general rules.
