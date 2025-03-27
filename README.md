@@ -1,11 +1,11 @@
 # Crazy Eights Mini-project
 
-This is a mini-project I decided to make in order to practice using Kotlin. It's a
+This is a mini-project I decided to make in order to practice using Kotlin, and also because it's fun to do. It's a
 very simple program that simulates a simple game of Crazy Eights between a human player (you) and
 the computer. Perhaps I may expand this project further to see what else I can add/modify.
 Below are the basic rules and instructions on how to play.
 
-Note: I used Java 21 while making this project. Just a warning.
+Note: I used Java 21 while making this project. I have not tested my code using older version of Java, so do be warned.
 
 ## How to play
 
@@ -44,8 +44,8 @@ I hope you enjoy my basic but fun mini-project.
 
 ## Things I'm considering adding/changing
 
-- Option for more than 2 players
-- Option to edit win score
+- ~~Option for more than 2 players~~ ✅
+- ~~Option to edit win score~~ ✅
 - Giving certain cards special abilities or adding special cards (+2, swap hands, reverse order, something new, etc.)
 - Improved computer decision-making
 - Window with UI instead of using the console
@@ -58,3 +58,8 @@ I hope you enjoy my basic but fun mini-project.
     - v1.1.1 - 3/27/25
       - Added options menu and moved the option to simulate games there
       - Reformatted changelog
+- v1.2
+    - v1.2.0 - 3/27/25
+      - Added the option to have 3, 4, or 5 players
+      - Added the option to edit the score limit
+      - Improved code that simulated full rounds

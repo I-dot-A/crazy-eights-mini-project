@@ -1,6 +1,7 @@
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
+**/old_code.txt
 !**/src/test/**/out/
 
 ### Eclipse ###

@@ -6,6 +6,9 @@ open class Player(protected val playerNumber: Int, protected val deck: Deck, pro
     val playerRoundScore: Int
         get() = roundScore
 
+    val pNum: Int
+        get() = playerNumber
+
     fun clearHand() {
         hand.clearDeck()
     }
