@@ -12,6 +12,7 @@ class CrazyEights {
     private var latestSuitIfEight : String = ""
     private var playerOneScore = 0
     private var playerTwoScore = 0
+    private var humanPlaying = true
 
     init { // Man, I love Kotlin
         waitForPlayerConfirmation()
@@ -27,20 +28,52 @@ class CrazyEights {
             "░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚══════╝░░░╚═╝░░░  ╚══════╝╚═╝░╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═════╝░")
     }
 
+    private fun printRules() {
+        println("""
+                --=CURRENT RULES=--
+                Human Player: $humanPlaying
+            """.trimIndent())
+    }
+
+    private fun editRules() {
+        println("-----".repeat(20))
+        printRules()
+        val scanner = Scanner(System.`in`)
+        while (true) {
+            println("Options: 'toggle human' / 'exit'")
+
+            val input = scanner.nextLine()
+
+            if (input.lowercase() == "toggle human" || input.lowercase() == "togglehuman" || input.lowercase() == "toggle") {
+                humanPlaying = !humanPlaying
+                printRules()
+            } else if (input.lowercase() == "exit") {
+                println("Exiting options menu...")
+                println("-----".repeat(20))
+                break
+            } else {
+                println("Invalid response.")
+            }
+        }
+    }
+
     private fun waitForPlayerConfirmation() { // When the program starts, the player needs to type 'play'
         sillyTitleDrop()
         val scanner = Scanner(System.`in`)
-        println("Type 'play' to start.")
+        println("Type 'play' to start. Type 'edit' to edit the rules.")
 
         var input = scanner.nextLine()
         var iterations = 0
-        while (input != "play") { // Will keep looping until the player puts in the correct input
-            if (input == "quit") {
+        while (input.lowercase() != "play") { // Will keep looping until the player puts in the correct input
+            if (input.lowercase() == "quit") {
                 println("Goodbye!")
                 exitProcess(0)
+            } else if (input.lowercase() == "edit") {
+                editRules()
+                println("Type 'play' to start. Type 'edit' to edit the rules.")
             }
 
-            if (iterations != 0 && iterations % 5 == 0) { println("Remember to type 'play' to start.") }
+            if (iterations != 0 && iterations % 5 == 0) { println("Remember to type 'play' to start. Type 'edit' to edit the rules.") }
             input = scanner.nextLine()
             iterations++
         }
@@ -97,34 +130,6 @@ class CrazyEights {
     }
 
     private fun playGame() { // Starts the game
-        var scanner = Scanner(System.`in`)
-        var humanPlaying = true
-
-        println("Type 'PvC' to play vs computers or 'CvC' to simulate a match with computer players.")
-        while (true) { // Here, the player gets to decide if they actually want to play or not
-            try {
-                val input = scanner.nextLine()
-
-                if (input == "quit") {
-                    println("Goodbye!")
-                    exitProcess(0)
-                } else if (input.lowercase() == "pvc") {
-                    println("You have elected to play vs computers.")
-                    break
-                } else if (input.lowercase() == "cvc") {
-                    println("You have elected not to play. Simulating game...")
-                    humanPlaying = false
-                    break
-                } else {
-                    throw IllegalArgumentException()
-                }
-            } catch (e: IllegalArgumentException) {
-                println("Please enter a valid input: 'pvc' / 'cvc' / 'quit'")
-                scanner = Scanner(System.`in`)
-                continue
-            }
-        }
-
         // Variables for casting
         lateinit var humanPlayerOne : HumanPlayer
         lateinit var computerPlayerOne : ComputerPlayer
@@ -142,6 +147,9 @@ class CrazyEights {
 
             computerPlayerOne = p1 as ComputerPlayer
             playerTwo = p2 as ComputerPlayer
+
+            println("Human player is set to false! Simulating game...")
+            Thread.sleep(2000)
         }
 
         var rounds = 0
