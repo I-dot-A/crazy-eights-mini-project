@@ -444,14 +444,26 @@ class CrazyEights {
 
             println("Calculating scores...")
 
+            players[0].calcRoundScore()
+            p2.calcRoundScore()
+
             playerOneScore += players[0].playerRoundScore
             playerTwoScore += p2.playerRoundScore
 
             for (i in 2..< numPlayers) {
                 when (i) {
-                    2 -> playerThreeScore += p3.playerRoundScore
-                    3 -> playerFourScore += p4.playerRoundScore
-                    4 -> playerFiveScore += p5.playerRoundScore
+                    2 -> {
+                        p3.calcRoundScore()
+                        playerThreeScore += p3.playerRoundScore
+                    }
+                    3 -> {
+                        p4.calcRoundScore()
+                        playerFourScore += p4.playerRoundScore
+                    }
+                    4 -> {
+                        p5.calcRoundScore()
+                        playerFiveScore += p5.playerRoundScore
+                    }
                 }
             }
 
@@ -516,14 +528,9 @@ class CrazyEights {
         }
 
         if (numPlayers > 2) { // Makes the unused score variables unrealistically high, so they cannot be the minimum
-            playerThreeScore = 9999999
             playerFourScore = 9999999
             playerFiveScore = 9999999
         } else if (this.numPlayers > 3) {
-            playerFourScore = 9999999
-            playerFiveScore = 9999999
-        } else if (this.numPlayers > 4) {
-            playerFourScore = 9999999
             playerFiveScore = 9999999
         }
 
